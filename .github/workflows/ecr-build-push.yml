@@ -15,7 +15,6 @@ env:
   #image_tag: ${{ github.sha }}
   image_name: "helloworld"
   image_tag: "1.1"
-  ecr_image_tag: 
 
 jobs:
   build_and_push_ecs: # job 고유 식별자
