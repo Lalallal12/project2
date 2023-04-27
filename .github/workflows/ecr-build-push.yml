@@ -3,9 +3,9 @@ name: build & push docker image to AWS ECR
 
 on:
   push:
-    branches: [ "rora" ]
+    branches: [ "main", "rora" ]
   pull_request:
-    branches: [ "rora" ]
+    branches: [ "main", "rora" ]
   
 jobs:
   build_and_push_docker_image_to_AWS_ECR: # job_id : 고유 식별자
