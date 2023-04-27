@@ -12,7 +12,7 @@ env:
   role_arn: "arn:aws:iam::644329934495:role/ecr-github-action-oidc-role"
   aws_region: "ap-northeast-2"
   repository: "ohrory218"
-  aws_image_tag: ${{ github.sha }}
+  #aws_image_tag: ${{ github.sha }}
   image_name: "helloworld"
   image_tag: "1.1"
 
@@ -47,9 +47,9 @@ jobs:
           cd ./helloworld-was
           pwd
           ls
-          docker build --tag ${{ env.repository }}/${{ env.image_name }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }} .
+          docker build --tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} .
           
       - name: "5. AMAZON ECR에 도커 이미지 PUSH"
         run: |
-          docker tag ${{ env.repository }}/${{ env.image_name }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
+          docker tag ${{ env.repository }}/${{ env.image_name }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.image_tag }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.image_tag }}
