@@ -44,8 +44,9 @@ jobs:
 
       - name: "4. 도커 이미지 Build"
         run: |
-          pwd
           cd ./helloworld-was
+          pwd
+          ls
           docker build --tag ${{ env.repository }}/${{ env.image_name }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }} .
           
       - name: "5. AMAZON ECR에 도커 이미지 PUSH"
