@@ -15,7 +15,6 @@ env:
   #image_tag: ${{ github.sha }}
   image_name: "helloworld"
   image_tag: "1.1"
-  ecr_image_tag: 
 
 jobs:
   aws_ecr_login: # job 고유 식별자
@@ -45,6 +44,7 @@ jobs:
 
   build_docker_image: # job_id : 고유 식별자
     name: "# 도커 이미지 BUILD"
+    runs-on: ubuntu-latest
     steps:
       #https://github.com/docker/metadata-action
       - name: "1. 도커 이미지에 메타 데이터 만들기"
@@ -65,6 +65,7 @@ jobs:
 
   push_docker_image_to_ecr:
     name: "# AMAZON ECR에 PUSH"
+    runs-on: ubuntu-latest
     steps:
       - name: "1. AMAZON ECR에 도커 이미지 PUSH"
         run: |
