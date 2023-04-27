@@ -8,9 +8,14 @@ on:
     branches: [ "main", "rora" ]
   
 env:
-  ecr_url: "arn:aws:ecr:ap-northeast-2:644329934495:repository/*"
+  #ecr_url: "arn:aws:ecr:ap-northeast-2:644329934495:repository/*"
   role_arn: "arn:aws:iam::644329934495:role/ecr-github-action-oidc-role"
   aws_region: "ap-northeast-2"
+  repository: "ohrory218"
+  #image_tag: ${{ github.sha }}
+  image_name: "helloworld"
+  image_tag: "1.1"
+  ecr_image_tag: 
 
 jobs:
   build_tag_push: # job 고유 식별자
@@ -38,15 +43,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: "4. AMAZON ECR에 도커 이미지를 빌드, 태그, 푸시"
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: my-ecr-repo
-          IMAGE_TAG: ${{ github.sha }}
+      - name: "4. 도커 이미지 BUILD, TAG"
+        #env:
+        #  REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        #  REPOSITORY: my-ecr-repo
         run: |
-          echo ${{ steps.login-ecr.outputs }}
-          working-directory: ./helloworld-was
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          pwd
+          docker build --tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} .
 
-
+      - name: "5. AMAZON ECR에 PUSH"
+          docker tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} ${{ env.ecr_url }}:${{ needs.prepare.outputs.tag_date }}.${{ needs.prepare.outputs.tag_git_hash }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
