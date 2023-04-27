@@ -1,5 +1,5 @@
 # https://github.com/aws-actions/amazon-ecr-login#login-to-amazon-ecr-public-then-build-and-push-a-docker-image
-name: build & push docker image to AWS ECR
+name: build and push docker image to AWS ECR
 
 on:
   push:
@@ -42,14 +42,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: "4. 도커 이미지 Build"
+      - name: "4. 도커 이미지 Build & AMAZON ECR에 도커 이미지 PUSH"
         run: |
           cd ./helloworld-was
-          pwd
-          ls
-          docker build --tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} .
-          
-      - name: "5. AMAZON ECR에 도커 이미지 PUSH"
-        run: |
-          docker tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.image_tag }}
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.image_tag }} .
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.image_tag }}
