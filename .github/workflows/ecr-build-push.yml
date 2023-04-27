@@ -12,13 +12,13 @@ env:
   role_arn: "arn:aws:iam::644329934495:role/ecr-github-action-oidc-role"
   aws_region: "ap-northeast-2"
   repository: "ohrory218"
-  #image_tag: ${{ github.sha }}
+  aws_image_tag: ${{ github.sha }}
   image_name: "helloworld"
   image_tag: "1.1"
 
 jobs:
   build_and_push_ecs: # job 고유 식별자
-    name: "# AWS ECR 로그인"
+    name: "# ECR 로그인 후 도커 이미지 BUILD, ECR에 PUSH"
     runs-on: ubuntu-latest
 
     permissions:
@@ -42,23 +42,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      #https://github.com/docker/metadata-action
-      - name: "4. 도커 이미지에 메타 데이터 만들기"
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.repository }}/${{ env.image_name }}
-      
-      # https://github.com/docker/build-push-action
-      - name: "5. 도커 이미지 Build"
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: .
-          push: false
-          # 1번 스텝의 id: meta에서 만들어진 outputs 객체의 tags, labels
-          tags: ${{ steps.meta.outputs.tags }}
-          #labels: ${{ steps.meta.outputs.labels }}
-      - name: "6. AMAZON ECR에 도커 이미지 PUSH"
+      - name: "4. 도커 이미지 Build"
+        run: |
+          pwd
+          cd ./helloworld-was
+          docker build --tag ${{ env.repository }}/${{ env.image_name }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }} .
+          
+      - name: "5. AMAZON ECR에 도커 이미지 PUSH"
         run: |
           docker tag ${{ env.repository }}/${{ env.image_name }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
