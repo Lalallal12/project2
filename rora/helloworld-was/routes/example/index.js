@@ -1,6 +1,4 @@
 'use strict'
-//const mongodb = require('mongodb')
-const { DB_DATABASE } = process.env
 
 module.exports = async function (fastify, opts) {
   fastify.get('/', async function (request, reply) {
