@@ -18,7 +18,9 @@ jobs:
       - name: "2. AWS credential 설정"
         uses: aws-actions/configure-aws-credentials@v2 # More information on this action can be found below in the 'AWS Credentials' section
         with:
-          role-to-assume: arn:aws:iam::644329934495:role/my-github-actions-role
+          role-to-assume: arn:aws:iam::644329934495:role/ecr-github-action-oidc-role
+          #aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
       
       # Login to Amazon ECR Private, then build and push a Docker image: (cf. public)
