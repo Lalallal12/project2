@@ -8,7 +8,7 @@ on:
     branches: [ "main", "rora" ]
   
 env:
-  role_arn: "arn:aws:iam::644329934495:role/ecr-github-action-oidc-role"
+  role_arn: ${{ secrets.RORA_ECR_ROLE_ARN }}
   aws_region: "ap-northeast-2"
   repository: "ohrory218"
   aws_image_tag: ${{ github.sha }}
