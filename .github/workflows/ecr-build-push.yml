@@ -53,9 +53,6 @@ jobs:
           docker build --tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} .
 
       - name: "5. AMAZON ECR에 PUSH"
-<<<<<<< HEAD
-=======
         run: |
->>>>>>> 6c1e9fd1c422dc29cec1884c4b2dddbd0075c73d
           docker tag ${{ env.repository }}/${{ env.image_name }}:${{ env.image_tag }} ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.repository }}:${{ env.aws_image_tag }}
