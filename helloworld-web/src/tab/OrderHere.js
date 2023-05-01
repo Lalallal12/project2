@@ -8,7 +8,7 @@ function OrderHere({ orders, onSelectMenu, currentRestaurant, onSelectRestaurant
 
   const [menuPageIdx, setMenuPageIdx] = useState(0)
 
-  if (error) return <FilledMessage>요청을 받아올 수 없습니다. 서버 문제같은데요?</FilledMessage>
+  if (error) return <FilledMessage>요청을 받아올 수 없습니다. 서버 문제같은데요? 웹 배포 자동화는 성공적으로 이루어졌습니다.</FilledMessage>
   if (!restaurants) return <FilledMessage>로딩 중</FilledMessage>
 
 
