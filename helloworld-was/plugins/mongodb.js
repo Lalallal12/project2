@@ -1,5 +1,6 @@
 const fp = require('fastify-plugin')
-const { DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_PORT, DB_DATABASE} = process.env
+const { MONGO_HOSTNAME, MONGO_USERNAME, MONGO_PASSWORD} = process.env
+console.log(`[DB CONNECTION STRING] mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:27017/?authMechanism=DEFAULT`)
 
 module.exports = fp(async function (fastify, opts) {
   
@@ -7,7 +8,7 @@ module.exports = fp(async function (fastify, opts) {
     // force to close the mongodb connection when app stopped
     // the default value is false
     forceClose: true,
-    url: `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOSTNAME}:${DB_PORT}/?authMechanism=DEFAULT`
+    url: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:27017/?authMechanism=DEFAULT`
   })  
 })
 
