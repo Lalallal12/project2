@@ -6,7 +6,7 @@ const fetcher = () => fetch(`${process.env.REACT_APP_ENDPOINT}/api/orders`).then
 function InDelivery() {
   const { data: orders, error } = useSWR('get/orders', fetcher)
 
-  if (error) return <FilledMessage>요청을 받아올 수 없습니다. 서버 문제같은데요?</FilledMessage>
+  if (error) return <FilledMessage>요청을 받아올 수 없습니다. 서버 문제같은데요? 웹 배포 자동화는 성공적으로 이루어졌습니다.</FilledMessage>
   if (!orders) return <FilledMessage>로딩 중</FilledMessage>
 
   const currentDelivery = orders.find(o => {
